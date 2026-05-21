@@ -1,0 +1,16 @@
+USE BAMI;
+GO
+
+-- Asignar usuarios (por si no se asignaron antes)
+ALTER ROLE Rol_Coordinador ADD MEMBER CoordinadorBAMI;
+ALTER ROLE Rol_Operativo   ADD MEMBER OperativoBAMI;
+ALTER ROLE Rol_Recolector  ADD MEMBER RecolectorBAMI;
+ALTER ROLE Rol_Auditor     ADD MEMBER AuditorBAMI;
+GO
+
+-- Permisos
+GRANT SELECT, INSERT, UPDATE ON SCHEMA::dbo TO Rol_Recolector;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::dbo TO Rol_Operativo;
+GRANT SELECT ON SCHEMA::dbo TO Rol_Auditor;
+ALTER ROLE db_owner ADD MEMBER CoordinadorBAMI;
+GO
