@@ -4,13 +4,13 @@
    Basado en el diagrama UML proporcionado
    ============================================================ */
 
-IF DB_ID(N'BD_Rutas_Donaciones') IS NULL
+IF DB_ID(N'BAMI') IS NULL
 BEGIN
     CREATE DATABASE BAMI;
 END
 GO
 
-USE BD_Rutas_Donaciones;
+USE BAMI;
 GO
 
 
