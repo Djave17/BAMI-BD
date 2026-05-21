@@ -15,8 +15,6 @@ GO
 
 
 
-
-
 /* ============================================================
    LIMPIEZA DE OBJETOS
    ============================================================ */
@@ -346,4 +344,244 @@ GROUP BY
     rh.id_ruta,
     rh.codigo_recolector,
     rh.fecha_ruta;
+GO
+
+/* ============================================================
+   ============================================================
+   INSERCIONES DE DATOS DE EJEMPLO
+   ============================================================
+   ============================================================ */
+
+PRINT 'Insertando datos de ejemplo...';
+GO
+
+-- 1. Insertar usuarios (recolectores)
+INSERT INTO dbo.Usuario (correo, nombre_usuario, telefono, activo) VALUES
+('carlos.martinez@recoleccion.com', 'Carlos Martínez', '5551234567', 1),
+('ana.rodriguez@recoleccion.com', 'Ana Rodríguez', '5552345678', 1),
+('luis.fernandez@recoleccion.com', 'Luis Fernández', '5553456789', 1),
+('maria.lopez@recoleccion.com', 'María López', '5554567890', 1),
+('jorge.ramirez@recoleccion.com', 'Jorge Ramírez', '5555678901', 1);
+GO
+
+-- 2. Insertar recolectores
+INSERT INTO dbo.Recolector (id_usuario) VALUES
+(1), (2), (3), (4), (5);
+GO
+
+-- 3. Insertar categorías de donación
+INSERT INTO dbo.CategoriaDonacion (nombre, descripcion, activo) VALUES
+(N'Alimentos No Perecibles', N'Arroz, frijoles, pasta, enlatados, etc.', 1),
+(N'Ropa y Calzado', N'Prendas de vestir en buen estado, zapatos', 1),
+(N'Juguetes', N'Juguetes educativos y en buen estado', 1),
+(N'Medicinas', N'Medicamentos no vencidos', 1),
+(N'Artículos de Limpieza', N'Jabón, cloro, detergentes, etc.', 1),
+(N'Equipo Médico', N'Sillas de ruedas, muletas, andaderas', 1),
+(N'Útiles Escolares', N'Cuadernos, lápices, mochilas', 1),
+(N'Electrodomésticos', N'Licuadoras, microondas, estufas', 1);
+GO
+
+-- 4. Insertar sucursales (puntos de recolección)
+INSERT INTO dbo.Sucursal (nombre, correo, telefono, activo) VALUES
+(N'Sucursal Centro', 'centro@donaciones.org', '5551112233', 1),
+(N'Sucursal Norte', 'norte@donaciones.org', '5551113344', 1),
+(N'Sucursal Sur', 'sur@donaciones.org', '5551114455', 1),
+(N'Sucursal Este', 'este@donaciones.org', '5551115566', 1),
+(N'Sucursal Oeste', 'oeste@donaciones.org', '5551116677', 1),
+(N'Sucursal Universidad', 'universidad@donaciones.org', '5551117788', 1),
+(N'Sucursal Industrial', 'industrial@donaciones.org', '5551118899', 1),
+(N'Sucursal Comercial', 'comercial@donaciones.org', '5551119900', 1);
+GO
+
+-- 5. Insertar rutas (cabeceras)
+INSERT INTO dbo.RutaHeader (codigo_recolector, fecha_ruta, activo) VALUES
+(1, '2024-01-15', 1),
+(1, '2024-01-20', 1),
+(2, '2024-01-18', 1),
+(2, '2024-01-25', 1),
+(3, '2024-01-22', 1),
+(1, '2024-02-01', 1),
+(2, '2024-02-05', 1),
+(4, '2024-02-10', 1),
+(5, '2024-02-15', 1);
+GO
+
+-- 6. Insertar detalles de ruta (paradas)
+INSERT INTO dbo.RutaDetalle (id_ruta, id_sucursal, id_estado_parada, hora_visita, check_in, check_out) VALUES
+-- Ruta 1 (Recolector 1, 15/01/2024)
+(1, 1, 3, '2024-01-15 09:00:00', '2024-01-15 09:05:00', '2024-01-15 09:45:00'),
+(1, 2, 3, '2024-01-15 10:00:00', '2024-01-15 10:10:00', '2024-01-15 10:50:00'),
+(1, 3, 3, '2024-01-15 11:00:00', '2024-01-15 11:05:00', '2024-01-15 11:40:00'),
+(1, 4, 2, '2024-01-15 12:00:00', '2024-01-15 12:05:00', '2024-01-15 12:15:00'), -- Rechazada
+-- Ruta 2 (Recolector 1, 20/01/2024)
+(2, 5, 3, '2024-01-20 09:30:00', '2024-01-20 09:35:00', '2024-01-20 10:20:00'),
+(2, 6, 3, '2024-01-20 10:45:00', '2024-01-20 10:50:00', '2024-01-20 11:35:00'),
+(2, 7, 1, '2024-01-20 11:50:00', NULL, NULL), -- Aprobada pendiente
+-- Ruta 3 (Recolector 2, 18/01/2024)
+(3, 8, 3, '2024-01-18 08:30:00', '2024-01-18 08:35:00', '2024-01-18 09:15:00'),
+(3, 1, 3, '2024-01-18 09:30:00', '2024-01-18 09:40:00', '2024-01-18 10:20:00'),
+(3, 2, 3, '2024-01-18 10:45:00', '2024-01-18 10:50:00', '2024-01-18 11:30:00'),
+-- Ruta 4 (Recolector 2, 25/01/2024)
+(4, 3, 3, '2024-01-25 14:00:00', '2024-01-25 14:05:00', '2024-01-25 14:50:00'),
+(4, 4, 4, '2024-01-25 15:00:00', '2024-01-25 15:10:00', '2024-01-25 15:45:00'), -- Entrega
+-- Ruta 5 (Recolector 3, 22/01/2024)
+(5, 5, 3, '2024-01-22 10:00:00', '2024-01-22 10:05:00', '2024-01-22 10:50:00'),
+(5, 6, 2, '2024-01-22 11:00:00', '2024-01-22 11:05:00', '2024-01-22 11:15:00'), -- Rechazada
+(5, 7, 5, '2024-01-22 11:30:00', NULL, NULL), -- En espera
+-- Ruta 6 (Recolector 1, 01/02/2024)
+(6, 8, 3, '2024-02-01 09:00:00', '2024-02-01 09:10:00', '2024-02-01 09:55:00'),
+(6, 1, 3, '2024-02-01 10:15:00', '2024-02-01 10:20:00', '2024-02-01 11:00:00'),
+-- Ruta 7 (Recolector 2, 05/02/2024)
+(7, 2, 3, '2024-02-05 13:00:00', '2024-02-05 13:05:00', '2024-02-05 13:45:00'),
+(7, 3, 3, '2024-02-05 14:00:00', '2024-02-05 14:10:00', '2024-02-05 14:50:00');
+GO
+
+-- 7. Insertar encabezados de donación
+INSERT INTO dbo.DonacionHeader (id_ruta_detalle, fecha_ingresa, num_recibo, num_requisicion, estado_bodega) VALUES
+(1, '2024-01-15 09:50:00', 'REC-2024-0001', 'REQ-001', 'Validada'),
+(2, '2024-01-15 11:00:00', 'REC-2024-0002', 'REQ-002', 'Validada'),
+(3, '2024-01-15 11:50:00', 'REC-2024-0003', NULL, 'Pendiente'),
+(5, '2024-01-20 10:30:00', 'REC-2024-0004', 'REQ-003', 'Recibida'),
+(6, '2024-01-20 11:45:00', 'REC-2024-0005', 'REQ-004', 'Validada'),
+(8, '2024-01-18 09:25:00', 'REC-2024-0006', 'REQ-005', 'Recibida'),
+(9, '2024-01-18 10:30:00', 'REC-2024-0007', 'REQ-006', 'Validada'),
+(10, '2024-01-18 11:45:00', 'REC-2024-0008', NULL, 'Pendiente'),
+(11, '2024-01-25 15:00:00', 'REC-2024-0009', 'REQ-007', 'Validada'),
+(12, '2024-01-25 15:55:00', 'REC-2024-0010', 'REQ-008', 'Recibida'),
+(13, '2024-01-22 11:00:00', 'REC-2024-0011', 'REQ-009', 'Validada'),
+(16, '2024-02-01 10:05:00', 'REC-2024-0012', 'REQ-010', 'Recibida'),
+(17, '2024-02-01 11:10:00', 'REC-2024-0013', NULL, 'Pendiente'),
+(18, '2024-02-05 13:55:00', 'REC-2024-0014', 'REQ-011', 'Validada'),
+(19, '2024-02-05 15:00:00', 'REC-2024-0015', 'REQ-012', 'Recibida');
+GO
+
+-- 8. Insertar detalles de donación
+INSERT INTO dbo.DonacionDetalle (id_donacion, id_categoria, monto, peso) VALUES
+-- Donación 1 (Alimentos + Ropa)
+(1, 1, 1500.00, 45.500),
+(1, 2, 800.00, 12.000),
+-- Donación 2 (Juguetes + Útiles)
+(2, 3, 600.00, 8.500),
+(2, 7, 350.00, 5.000),
+-- Donación 3 (Solo Alimentos)
+(3, 1, 2000.00, 60.000),
+-- Donación 4 (Limpieza + Alimentos)
+(4, 5, 450.00, 15.000),
+(4, 1, 1200.00, 35.000),
+-- Donación 5 (Medicinas + Equipo Médico)
+(5, 4, 3500.00, 2.500),
+(5, 6, 5000.00, 25.000),
+-- Donación 6 (Ropa)
+(6, 2, 1200.00, 18.000),
+-- Donación 7 (Alimentos + Limpieza + Útiles)
+(7, 1, 1800.00, 50.000),
+(7, 5, 320.00, 10.000),
+(7, 7, 280.00, 4.000),
+-- Donación 8 (Juguetes)
+(8, 3, 750.00, 12.000),
+-- Donación 9 (Electrodomésticos)
+(9, 8, 3500.00, 45.000),
+-- Donación 10 (Alimentos + Ropa)
+(10, 1, 950.00, 28.000),
+(10, 2, 450.00, 7.000),
+-- Donación 11 (Medicinas)
+(11, 4, 2800.00, 1.800),
+-- Donación 12 (Útiles + Juguetes)
+(12, 7, 420.00, 6.000),
+(12, 3, 380.00, 5.500),
+-- Donación 13 (Solo Alimentos)
+(13, 1, 1600.00, 48.000),
+-- Donación 14 (Limpieza)
+(14, 5, 280.00, 9.000),
+-- Donación 15 (Electrodomésticos + Equipo Médico)
+(15, 8, 4200.00, 52.000),
+(15, 6, 1800.00, 12.000);
+GO
+
+/* ============================================================
+   CONSULTAS DE VERIFICACIÓN
+   ============================================================ */
+
+PRINT '';
+PRINT '=== VERIFICACIÓN DE DATOS INSERTADOS ===';
+PRINT '';
+
+-- Ver usuarios
+PRINT '1. USUARIOS:';
+SELECT id_usuario, correo, nombre_usuario, telefono FROM dbo.Usuario;
+PRINT '';
+
+-- Ver recolectores
+PRINT '2. RECOLECTORES:';
+SELECT r.codigo_recolector, u.nombre_usuario, u.correo 
+FROM dbo.Recolector r
+INNER JOIN dbo.Usuario u ON r.id_usuario = u.id_usuario;
+PRINT '';
+
+-- Ver categorías
+PRINT '3. CATEGORÍAS:';
+SELECT id_categoria, nombre, descripcion FROM dbo.CategoriaDonacion WHERE activo = 1;
+PRINT '';
+
+-- Ver sucursales
+PRINT '4. SUCURSALES:';
+SELECT id_sucursal, nombre, telefono FROM dbo.Sucursal WHERE activo = 1;
+PRINT '';
+
+-- Ver rutas
+PRINT '5. RUTAS (CABECERAS):';
+SELECT rh.id_ruta, u.nombre_usuario AS recolector, rh.fecha_ruta 
+FROM dbo.RutaHeader rh
+INNER JOIN dbo.Recolector r ON rh.codigo_recolector = r.codigo_recolector
+INNER JOIN dbo.Usuario u ON r.id_usuario = u.id_usuario;
+PRINT '';
+
+-- Ver detalles de ruta
+PRINT '6. DETALLES DE RUTA (primeros 10):';
+SELECT TOP 10 rd.id_ruta_detalle, rd.id_ruta, s.nombre AS sucursal, 
+       ep.nombre AS estado, rd.hora_visita
+FROM dbo.RutaDetalle rd
+INNER JOIN dbo.Sucursal s ON rd.id_sucursal = s.id_sucursal
+INNER JOIN dbo.EstadoParada ep ON rd.id_estado_parada = ep.id_estado_parada
+ORDER BY rd.id_ruta_detalle;
+PRINT '';
+
+-- Ver donaciones y sus totales (usando vista)
+PRINT '7. DONACIONES CON TOTALES (vw_DonacionTotal):';
+SELECT * FROM dbo.vw_DonacionTotal ORDER BY fecha_ingresa DESC;
+PRINT '';
+
+-- Ver progreso de rutas (usando vista)
+PRINT '8. PROGRESO DE RUTAS (vw_RutaProgreso):';
+SELECT * FROM dbo.vw_RutaProgreso ORDER BY fecha_ruta DESC;
+PRINT '';
+
+-- Estadísticas generales
+PRINT '9. ESTADÍSTICAS GENERALES:';
+SELECT 
+    (SELECT COUNT(*) FROM dbo.Usuario) AS TotalUsuarios,
+    (SELECT COUNT(*) FROM dbo.Recolector) AS TotalRecolectores,
+    (SELECT COUNT(*) FROM dbo.Sucursal) AS TotalSucursales,
+    (SELECT COUNT(*) FROM dbo.RutaHeader) AS TotalRutas,
+    (SELECT COUNT(*) FROM dbo.RutaDetalle) AS TotalParadas,
+    (SELECT COUNT(*) FROM dbo.DonacionHeader) AS TotalDonaciones,
+    (SELECT COUNT(*) FROM dbo.DonacionDetalle) AS TotalDetallesDonacion;
+PRINT '';
+
+-- Resumen de donaciones por categoría
+PRINT '10. DONACIONES POR CATEGORÍA:';
+SELECT 
+    c.nombre AS Categoria,
+    COUNT(dd.id_donacion_detalle) AS CantidadDonaciones,
+    SUM(dd.monto) AS MontoTotal,
+    SUM(dd.peso) AS PesoTotal
+FROM dbo.DonacionDetalle dd
+INNER JOIN dbo.CategoriaDonacion c ON dd.id_categoria = c.id_categoria
+GROUP BY c.nombre
+ORDER BY MontoTotal DESC;
+PRINT '';
+
+PRINT '=== FIN DE LA CARGA DE DATOS ===';
+PRINT '';
+PRINT 'Script completado exitosamente.';
 GO
