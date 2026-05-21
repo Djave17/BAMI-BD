@@ -1,0 +1,20 @@
+-- ============================================
+-- PRUEBA 2: RecolectorBAMI 
+-- (SELECT, INSERT, UPDATE - NO DELETE)
+-- ============================================
+EXECUTE AS USER = 'RecolectorBAMI';
+
+SELECT * FROM DonacionDetalle;                    -- Debe funcionar
+
+-- INSERT (debe funcionar)
+INSERT INTO DonacionDetalle (id_donacion, id_categoria, monto, peso) 
+VALUES (1, 2, 500, 10.5);
+
+-- UPDATE (debe funcionar)
+UPDATE DonacionDetalle 
+SET monto = 1600, peso = 46 
+WHERE id_donacion_detalle = 1;
+
+-- DELETE debe fallar:
+-- EXECUTE AS USER = 'RecolectorBAMI';
+-- DELETE FROM DonacionDetalle WHERE id_donacion_detalle = 5;
