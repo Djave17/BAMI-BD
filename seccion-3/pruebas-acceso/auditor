@@ -1,0 +1,8 @@
+USE BAMI;
+GO
+-- ============================================
+-- PRUEBA 1: Auditor (Solo debe poder hacer SELECT)
+-- ============================================
+EXECUTE AS USER = 'AuditorBAMI';
+SELECT * FROM DonacionDetalle;          -- Debe funcionar
+-- CREATE TABLE PruebaAuditor (Id INT);  -- Debe fallar 

@@ -1,0 +1,10 @@
+-- ============================================
+-- PRUEBA 4: CoordinadorBAMI (db_owner)
+-- ============================================
+EXECUTE AS USER = 'CoordinadorBAMI';
+
+SELECT * FROM DonacionDetalle;
+
+-- Crear y borrar tabla (debe funcionar)
+CREATE TABLE PruebaCoordinador (Id INT PRIMARY KEY);
+DROP TABLE PruebaCoordinador;

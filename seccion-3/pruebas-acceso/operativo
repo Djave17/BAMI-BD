@@ -1,0 +1,19 @@
+-- ============================================
+-- PRUEBA 3: OperativoBAMI 
+-- (SELECT, INSERT, UPDATE, DELETE)
+-- ============================================+
+EXECUTE AS USER = 'OperativoBAMI';
+SELECT * FROM DonacionDetalle;                    -- Debe funcionar
+
+-- INSERT
+INSERT INTO DonacionDetalle (id_donacion, id_categoria, monto, peso) 
+VALUES (2, 3, 1200, 30);
+
+-- UPDATE
+UPDATE DonacionDetalle 
+SET peso = 20 
+WHERE id_donacion_detalle = 3;
+
+-- DELETE (debe funcionar)
+DELETE FROM DonacionDetalle 
+WHERE id_donacion_detalle = (SELECT MAX(id_donacion_detalle) FROM DonacionDetalle);
